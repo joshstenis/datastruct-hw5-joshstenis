@@ -104,12 +104,10 @@ class Node {
  * @param n the head node
  * @return a stack of the enumeration
  */
-stack<Node*>* enumerate(Node* n, stack<Node*>* e) {
-    if(n->getLeftChild() != NULL) enumerate(n->getLeftChild(), e);
-    if(n->getRightChild() != NULL) enumerate(n->getRightChild(), e);
-    if(n->getLeftChild() == NULL && n->getRightChild() == NULL) e->push(n);
-
-    return e;
+void enumerate(Node* n, stack<Node*> &e) {
+    if(n->getLeftChild() != NULL) return enumerate(n->getLeftChild(), e);
+    if(n->getRightChild() != NULL) return enumerate(n->getRightChild(), e);
+    if(n->getLeftChild() == NULL && n->getRightChild() == NULL) e.push(n);
 }
 
 /**
@@ -117,24 +115,13 @@ stack<Node*>* enumerate(Node* n, stack<Node*>* e) {
  * @param stack the stack of nodes
  */
 void outputStack(stack<Node*>* stack) {
-    cout << stack->top();
+    cout << stack->top()->getValue();
     stack->pop();
 
     while(stack->empty() == false) {
-      cout << " " << stack->top();
+      cout << " " << stack->top()->getValue();
       stack->pop();
     }
-}
-
-/**
- * Outputs the result of a search
- * @param k the key
- * @param h the head node (for enumerate)
- * @param n the iterable node
- */
-void outputSearch(int k, Node* h, Node* n) {
-    if(search(k, h) == NULL) cout << -1;
-    else outputStack(enumerate(h, new stack<Node*>()));
 }
 
 /**
@@ -145,9 +132,24 @@ void outputSearch(int k, Node* h, Node* n) {
  */
 Node* search(int k, Node* n) {
     if(n == NULL) return NULL;
-    else if(n->getValue() < k) search(k, n->getRightChild());
-    else if(n->getValue() > k) search(k, n->getLeftChild());
+    else if(n->getValue() < k) return search(k, n->getRightChild());
+    else if(n->getValue() > k) return search(k, n->getLeftChild());
     else return n;
+}
+
+/**
+ * Outputs the result of a search
+ * @param k the key
+ * @param h the head node (for enumerate)
+ * @param n the iterable node
+ */
+void outputSearch(int k, Node* h) {
+    if(search(k, h) == NULL) cout << -1;
+    else {
+        stack<Node*>* s = new stack<Node*>();
+        enumerate(h, *s);
+        outputStack(s);
+    }
 }
 
 /**
@@ -159,16 +161,17 @@ Node* search(int k, Node* n) {
 int insertNode(Node* c, int k) {
     if(k == c->getValue()) return -1;
     else if(c->getValue() == NULL) {
-        // cout << "INSERTING" << endl;
         c->setValue(k);
     } else if(k < c->getValue()) {
-        c->setLeftChild(new Node());
-        c->getLeftChild()->setParent(c);
-        return insertNode(c->getLeftChild(), k);
+        if(c->getLeftChild() == NULL) {
+            c->setLeftChild(new Node());
+            c->getLeftChild()->setParent(c);
+        } return insertNode(c->getLeftChild(), k);
     } else {
-        c->setRightChild(new Node());
-        c->getRightChild()->setParent(c);
-        return insertNode(c->getRightChild(), k);
+        if(c->getRightChild() == NULL) {
+            c->setRightChild(new Node());
+            c->getRightChild()->setParent(c);
+        } return insertNode(c->getRightChild(), k);
     } return 0;
 }
 
@@ -201,11 +204,9 @@ void removeNode(int k, Node* h) {
  */
 Node* createTree(vector<int> keys) {
     Node* head = new Node(keys[0], NULL, NULL);
-    for(int i=1; i < keys.size(); i++) {
-        // cout << "START LOOP" << endl;
-        insertNode(head, keys[i]);
-        // cout << "INSERTED" << endl;
-    } return head;
+
+    for(int i=1; i < keys.size(); i++) insertNode(head, keys[i]);
+    return head;
 }
 
 int main() {
@@ -230,13 +231,17 @@ int main() {
         case 1:                 // Search
         {
             cout << "SEARCH" << endl;
-            outputSearch(key, head, head);
+            outputSearch(key, head);
         } break;
 
         case 2:                 // Insert
         {
             if(insertNode(head, key) == -1) cout << -1;
-            else enumerate(head, new stack<Node*>());
+            else {
+                stack<Node*>* s = new stack<Node*>();
+                enumerate(head, *s);
+                outputStack(s);
+            }
         } break;
 
         case 3:                 // Delete
