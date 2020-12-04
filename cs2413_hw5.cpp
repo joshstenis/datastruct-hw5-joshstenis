@@ -193,7 +193,11 @@ void removeNode(int k, Node* h) {
         n->setValue(n->getRightChild()->getValue());
         n->setRightChild(NULL);
     } else {                                                                                        // Two children
-        //
+        Node* tmp = h->getRightChild();
+        cout << tmp->getValue() << endl;
+        while(tmp != NULL) tmp = tmp->getLeftChild();
+        n->setValue(tmp->getValue());
+        tmp->setValue(NULL);
     }
 }
 
@@ -246,6 +250,10 @@ int main() {
         case 3:                 // Delete
         {
             removeNode(key, head);
+
+            stack<Node*>* s = new stack<Node*>();
+            enumerate(head, *s);
+            outputStack(s);
         } break;
 
         default: break;
