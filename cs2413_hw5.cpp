@@ -185,10 +185,14 @@ void removeNode(int k, Node* h) {
     if(n->getLeftChild() == NULL && n->getRightChild() == NULL) {                                   // Leaf node
         if(n->getParent()->getLeftChild() == n) n->getParent()->setLeftChild(NULL);
         else n->getParent()->setRightChild(NULL);
-    } else if(n->getLeftChild() == NULL && n->getRightChild() != NULL || n->getLeftChild() != NULL && n->getRightChild() == NULL) {           // One child
+    } else if(n->getLeftChild() == NULL && n->getRightChild() != NULL) {                            // Only left child
+        n->setValue(n->getLeftChild()->getValue());
+        n->setLeftChild(NULL);
+    } else if(n->getLeftChild() != NULL && n->getRightChild() == NULL){                             // Only right child
+        n->setValue(n->getRightChild()->getValue());
+        n->setRightChild(NULL);
+    } else {                                                                                        // Two children
         //
-    } else {
-        // two children
     }
 }
 
