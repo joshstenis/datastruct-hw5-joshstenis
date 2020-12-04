@@ -105,8 +105,8 @@ class Node {
  * @return a stack of the enumeration
  */
 void enumerate(Node* n, stack<Node*> &e) {
-    if(n->getLeftChild() != NULL) return enumerate(n->getLeftChild(), e);
-    if(n->getRightChild() != NULL) return enumerate(n->getRightChild(), e);
+    if(n->getLeftChild() != NULL) enumerate(n->getLeftChild(), e);
+    if(n->getRightChild() != NULL) enumerate(n->getRightChild(), e);
     if(n->getLeftChild() == NULL && n->getRightChild() == NULL) e.push(n);
 }
 
