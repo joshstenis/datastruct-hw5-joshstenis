@@ -133,9 +133,7 @@ void outputStack(stack<Node*>* stack) {
  * @param n the iterable node
  */
 void outputSearch(int k, Node* h, Node* n) {
-    if(n == NULL) cout << -1;
-    else if(n->getValue() < k) outputSearch(k, h, n->getRightChild());
-    else if(n->getValue() > k) outputSearch(k, h, n->getLeftChild());
+    if(search(k, h) == NULL) cout << -1;
     else outputStack(enumerate(h, new stack<Node*>()));
 }
 
@@ -160,8 +158,8 @@ Node* search(int k, Node* n) {
  */
 int insertNode(Node* c, int k) {
     if(k == c->getValue()) return -1;
-    else if(c == NULL) {
-        cout << "INSERTING" << endl;
+    else if(c->getValue() == NULL) {
+        // cout << "INSERTING" << endl;
         c->setValue(k);
     } else if(k < c->getValue()) {
         c->setLeftChild(new Node());
@@ -204,9 +202,9 @@ void removeNode(int k, Node* h) {
 Node* createTree(vector<int> keys) {
     Node* head = new Node(keys[0], NULL, NULL);
     for(int i=1; i < keys.size(); i++) {
-        cout << "START LOOP" << endl;
+        // cout << "START LOOP" << endl;
         insertNode(head, keys[i]);
-        cout << "INSERTED" << endl;
+        // cout << "INSERTED" << endl;
     } return head;
 }
 
