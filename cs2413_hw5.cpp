@@ -100,6 +100,19 @@ class Node {
 };
 
 /**
+ * Searches the BST and returns the node to be looked for
+ * @param k the key to be found
+ * @param n the node from which to begin the search
+ * @return the node once it is found (or not)
+ */
+Node* search(int k, Node* n) {
+    if(n == NULL) return NULL;
+    else if(n->getValue() < k) return search(k, n->getRightChild());
+    else if(n->getValue() > k) return search(k, n->getLeftChild());
+    else return n;
+}
+
+/**
  * Enumerates through the tree as a stack
  * @param n the head node
  * @return a stack of the enumeration
@@ -107,7 +120,7 @@ class Node {
 void enumerate(Node* n, stack<Node*> &e) {
     if(n->getLeftChild() != NULL) enumerate(n->getLeftChild(), e);
     if(n->getRightChild() != NULL) enumerate(n->getRightChild(), e);
-    if(n->getLeftChild() == NULL && n->getRightChild() == NULL) e.push(n);
+    e.push(n);
 }
 
 /**
@@ -122,19 +135,6 @@ void outputStack(stack<Node*>* stack) {
       cout << " " << stack->top()->getValue();
       stack->pop();
     }
-}
-
-/**
- * Searches the BST and returns the node to be looked for
- * @param k the key to be found
- * @param n the node from which to begin the search
- * @return the node once it is found (or not)
- */
-Node* search(int k, Node* n) {
-    if(n == NULL) return NULL;
-    else if(n->getValue() < k) return search(k, n->getRightChild());
-    else if(n->getValue() > k) return search(k, n->getLeftChild());
-    else return n;
 }
 
 /**
@@ -230,7 +230,6 @@ int main() {
     switch(op) {                                // Operation
         case 1:                 // Search
         {
-            cout << "SEARCH" << endl;
             outputSearch(key, head);
         } break;
 
