@@ -173,7 +173,8 @@ Node* search(int k, Node* n) {
  */
 int insertNode(Node* c, Node* n) {
     if(n->getValue() == c->getValue()) return -1;
-    else if(c->getValue() == NULL) {
+    else if(c == NULL) {
+        cout << "INSERTING" << endl;
         n->setLeftChild(c->getLeftChild());
         n->setRightChild(c->getRightChild());
         n->setParent(c->getParent());
@@ -200,8 +201,10 @@ void removeNode(int k, Node* h) {
 Node* createTree(vector<int> keys) {
     Node* head = new Node(keys[0], NULL, NULL);
     for(int i=1; i < keys.size(); i++) {
+        cout << "START LOOP" << endl;
         Node* n = new Node(keys[i], NULL, NULL, NULL);
         insertNode(head, n);
+        cout << "INSERTED" << endl;
     } return head;
 }
 
@@ -216,16 +219,17 @@ int main() {
         init.push_back(strToInt(val));
     }
 
-    // cin.ignore(1, '\n');
+    cin.ignore(1, '\n');
     cin >> op;
 
-    // cin.ignore(1, '\n');
+    cin.ignore(1, '\n');
     cin >> key;
 
     Node* head = createTree(init);              // Creates inital tree
     switch(op) {                                // Operation
         case 1:                 // Search
         {
+            cout << "SEARCH" << endl;
             outputSearch(key, head, head);
         } break;
 
