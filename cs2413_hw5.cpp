@@ -210,18 +210,19 @@ int main() {
     int op, key;
     vector<int> init;
 
-    while(!cin.fail()) {                        // Takes input and creates initial tree
+    while(!cin.fail()) {                        // Takes input for initial tree
         cin >> val;
         if(val == "s") break;
         init.push_back(strToInt(val));
-    } Node* head = createTree(init);
+    }
 
-    cin.ignore(1, '\n');
+    // cin.ignore(1, '\n');
     cin >> op;
 
-    cin.ignore(1, '\n');
+    // cin.ignore(1, '\n');
     cin >> key;
 
+    Node* head = createTree(init);              // Creates inital tree
     switch(op) {                                // Operation
         case 1:                 // Search
         {
