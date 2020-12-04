@@ -101,7 +101,77 @@ class Node {
         Node* getParent() {
             return parent;
         }
+
+        /**
+         * Sets the parent node
+         * @param p the new parent node
+         */
+        void setParent(Node* p) {
+            parent = p;
+        }
 };
+
+/**
+ * Enumerates through the tree as a stack
+ * @param n the head node
+ * @return a string of the enumeration
+ */
+string enumerate(Node* n) {
+    // Put  into stack
+}
+
+/**
+ * Outputs the result of a search
+ * @param k the key
+ * @param h the head node (for enumerate)
+ * @param n the iterable node
+ */
+void outputSearch(int k, Node* h, Node* n) {
+    if(n == NULL) cout << -1;
+    else if(n->getValue() < k) outputSearch(k, n->getRightChild());
+    else if(n->getValue() > k) outputSearch(k, n->getLeftChild());
+    else enumerate(h);
+}
+
+/**
+ * Searches the BST and returns the node to be looked for
+ * @param k the key to be found
+ * @param n the node from which to begin the search
+ * @return the node once it is found (or not)
+ */
+Node* search(int k, Node* n) {
+    if(n == NULL) return NULL;
+    else if(n->getValue() < k) search(k, n->getRightChild());
+    else if(n->getValue() > k) search(k, n->getLeftChild());
+    else return n;
+}
+
+/**
+ * Inserts a Node into a binary search tree
+ * @param c the iterable node
+ * @param n the new node
+ * @return a redunency code (-1 if node is already there)
+ */
+int insertNode(Node* c, Node* n) {
+    if(n->getValue() == c->getValue()) return -1;
+    else if(c->getValue() == NULL) {
+        n->setLeftChild(c->getLeftChild());
+        n->setRightChild(c->getRightChild());
+        n->setParent(c->getParent());
+        c = n;
+    } else if(n->getValue() < c->getValue()) insertNode(c->getLeftChild(), n);
+    else insertNode(c->getRightChild(), n);
+    return 0;
+}
+
+/**
+ * Removes a node from the binary search tree
+ * @param k the key of the node to be removed
+ * @param h the head node of the tree
+ */
+void removeNode(int k, Node* h) {
+    Node* n = search(k, h);
+}
 
 /**
  * Creates a binary search tree based on vector of keys
@@ -110,31 +180,10 @@ class Node {
  */
 Node* createTree(vector<int> keys) {
     Node* head = new Node(keys[0], NULL, NULL);
-
-    return head;
-}
-
-/**
- * Enumerates through the tree as a stack
- * @param n the head node
- * @return a string of the enumeration
- */
-string enumerate(Node* n, string s) {
-    if(n->getLeftChild() != NULL) enumerate(n->getLeftChild(), s);
-    else if(n->getRightChild() != NULL) enumerate(n->getRightChild(), s);
-    else s += n->getValue() + " ";
-    return s;
-}
-
-/**
- * Outputs the result of a search
- * @param k the key
- */
-void search(int k, Node* head, Node* n) {
-    if(n == NULL) cout << -1;
-    else if(n->getValue() < k) search(k, n->getRightChild());
-    else if(n->getValue() > k) search(k, n->getLeftChild());
-    else cout << enumerate(head, "").pop_back();
+    for(int i=1; i < keys.size(); i++) {
+        Node* n = new Node(keys[i], NULL, NULL, NULL);
+        insertNode(head, n);
+    } return head;
 }
 
 int main() {
