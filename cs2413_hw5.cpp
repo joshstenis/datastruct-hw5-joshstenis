@@ -118,8 +118,8 @@ class Node {
  * @return a stack of the enumeration
  */
 stack<Node*>* enumerate(Node* n, stack<Node*>* e) {
-    if(n->getLeftChild() != NULL) enumerate(n->getLeftChild());
-    else if(n->getRightChild() != NULL) enumerate(n->getRightChild());
+    if(n->getLeftChild() != NULL) enumerate(n->getLeftChild(), e);
+    else if(n->getRightChild() != NULL) enumerate(n->getRightChild(), e);
     else e->push(n);
 
     return e;
