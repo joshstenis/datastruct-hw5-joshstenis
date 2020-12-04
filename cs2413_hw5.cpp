@@ -26,26 +26,13 @@ class Node {
 
     public:
 
-        Node(int val, Node* par, Node* right, Node* left) {
-            value = val;
-            rightChild = right;
-            leftChild = left;
-            parent = par;
-        }
+        Node(int val, Node* par, Node* right, Node* left) : value(val), parent(par), rightChild(right), leftChild(left) {}      // Typical constr
 
-        Node(int val, Node* right, Node* left) {                 // Root constr
-            value = val;
-            rightChild = right;
-            leftChild = left;
-            parent = NULL;
-        }
+        Node(int val, Node* right, Node* left) : value(val), parent(NULL), rightChild(right), leftChild(left) {}                // Root constr
 
-        Node(int val, Node* par) {                              // Leaf constr
-            value = val;
-            rightChild = NULL;
-            leftChild = NULL;
-            parent = par;
-        }
+        Node(int val, Node* par) : value(val), parent(par), rightChild(NULL), leftChild(NULL) {}                                // Leaf constr
+
+        Node() : value(NULL), parent(NULL), rightChild(NULL), leftChild(NULL) {}                                                // Default constr
 
         /**
          * Returns the value
@@ -119,8 +106,8 @@ class Node {
  */
 stack<Node*>* enumerate(Node* n, stack<Node*>* e) {
     if(n->getLeftChild() != NULL) enumerate(n->getLeftChild(), e);
-    else if(n->getRightChild() != NULL) enumerate(n->getRightChild(), e);
-    else e->push(n);
+    if(n->getRightChild() != NULL) enumerate(n->getRightChild(), e);
+    if(n->getLeftChild() == NULL && n->getRightChild() == NULL) e->push(n);
 
     return e;
 }
@@ -171,17 +158,20 @@ Node* search(int k, Node* n) {
  * @param n the new node
  * @return a redunency code (-1 if node is already there)
  */
-int insertNode(Node* c, Node* n) {
-    if(n->getValue() == c->getValue()) return -1;
+int insertNode(Node* c, int k) {
+    if(k == c->getValue()) return -1;
     else if(c == NULL) {
         cout << "INSERTING" << endl;
-        n->setLeftChild(c->getLeftChild());
-        n->setRightChild(c->getRightChild());
-        n->setParent(c->getParent());
-        c = n;
-    } else if(n->getValue() < c->getValue()) insertNode(c->getLeftChild(), n);
-    else insertNode(c->getRightChild(), n);
-    return 0;
+        c->setValue(k);
+    } else if(k < c->getValue()) {
+        c->setLeftChild(new Node());
+        c->getLeftChild()->setParent(c);
+        return insertNode(c->getLeftChild(), k);
+    } else {
+        c->setRightChild(new Node());
+        c->getRightChild()->setParent(c);
+        return insertNode(c->getRightChild(), k);
+    } return 0;
 }
 
 /**
@@ -191,6 +181,15 @@ int insertNode(Node* c, Node* n) {
  */
 void removeNode(int k, Node* h) {
     Node* n = search(k, h);
+
+    if(n->getLeftChild() == NULL && n->getRightChild() == NULL) {                                   // Leaf node
+        if(n->getParent()->getLeftChild() == n) n->getParent()->setLeftChild(NULL);
+        else n->getParent()->setRightChild(NULL);
+    } else if(n->getLeftChild() == NULL && n->getRightChild() != NULL || n->getLeftChild() != NULL && n->getRightChild() == NULL) {           // One child
+        //
+    } else {
+        // two children
+    }
 }
 
 /**
@@ -202,8 +201,7 @@ Node* createTree(vector<int> keys) {
     Node* head = new Node(keys[0], NULL, NULL);
     for(int i=1; i < keys.size(); i++) {
         cout << "START LOOP" << endl;
-        Node* n = new Node(keys[i], NULL, NULL, NULL);
-        insertNode(head, n);
+        insertNode(head, keys[i]);
         cout << "INSERTED" << endl;
     } return head;
 }
@@ -235,7 +233,7 @@ int main() {
 
         case 2:                 // Insert
         {
-            if(insertNode(head, new Node(key, NULL, NULL, NULL)) == -1) cout << -1;
+            if(insertNode(head, key) == -1) cout << -1;
             else enumerate(head, new stack<Node*>());
         } break;
 
