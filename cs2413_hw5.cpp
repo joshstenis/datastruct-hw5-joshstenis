@@ -115,7 +115,7 @@ Node* search(int k, Node* n) {
 /**
  * Enumerates through the tree as a stack
  * @param n the head node
- * @return a stack of the enumeration
+ * @param e the address to the stack
  */
 void enumerate(Node* n, stack<Node*> &e) {
     if(n != NULL) e.push(n);
@@ -141,7 +141,6 @@ void outputStack(stack<Node*>* stack) {
  * Outputs the result of a search
  * @param k the key
  * @param h the head node (for enumerate)
- * @param n the iterable node
  */
 void outputSearch(int k, Node* h) {
     if(search(k, h) == NULL) cout << -1;
