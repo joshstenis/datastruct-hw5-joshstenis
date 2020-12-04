@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <stack>
 using namespace std;
 
 /**
@@ -114,10 +115,28 @@ class Node {
 /**
  * Enumerates through the tree as a stack
  * @param n the head node
- * @return a string of the enumeration
+ * @return a stack of the enumeration
  */
-string enumerate(Node* n) {
-    // Put  into stack
+stack<Node*>* enumerate(Node* n, stack<Node*>* e) {
+    if(n->getLeftChild() != NULL) enumerate(n->getLeftChild());
+    else if(n->getRightChild() != NULL) enumerate(n->getRightChild());
+    else e->push(n);
+
+    return e;
+}
+
+/**
+ * Outputs the stack given
+ * @param stack the stack of nodes
+ */
+void outputStack(stack<Node*>* stack) {
+    cout << stack->top();
+    stack->pop();
+
+    while(stack->empty() == false) {
+      cout << " " << stack->top();
+      stack->pop();
+    }
 }
 
 /**
@@ -128,9 +147,9 @@ string enumerate(Node* n) {
  */
 void outputSearch(int k, Node* h, Node* n) {
     if(n == NULL) cout << -1;
-    else if(n->getValue() < k) outputSearch(k, n->getRightChild());
-    else if(n->getValue() > k) outputSearch(k, n->getLeftChild());
-    else enumerate(h);
+    else if(n->getValue() < k) outputSearch(k, h, n->getRightChild());
+    else if(n->getValue() > k) outputSearch(k, h, n->getLeftChild());
+    else outputStack(enumerate(h, new stack<Node*>()));
 }
 
 /**
@@ -204,19 +223,20 @@ int main() {
     cin >> key;
 
     switch(op) {                                // Operation
-        case 1:
+        case 1:                 // Search
         {
-            // Search
+            outputSearch(key, head, head);
         } break;
 
-        case 2:
+        case 2:                 // Insert
         {
-            // Insert
+            if(insertNode(head, new Node(key, NULL, NULL, NULL)) == -1) cout << -1;
+            else enumerate(head, new stack<Node*>());
         } break;
 
-        case 3:
+        case 3:                 // Delete
         {
-            // Delete
+            removeNode(key, head);
         } break;
 
         default: break;
