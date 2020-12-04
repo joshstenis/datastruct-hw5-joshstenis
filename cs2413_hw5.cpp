@@ -47,17 +47,6 @@ class Node {
         }
 
         /**
-         * Outputs the result of a search
-         * @param k the key
-         */
-        void search(int k, Node* n) {
-            if(n == NULL) cout << -1;
-            else if(n->getValue() < k) search(k, n->getRightChild());
-            else if(n->getValue() > k) search(k, n->getLeftChild());
-            else cout << n;
-        }
-
-        /**
          * Returns the value
          * @return the value
          */
@@ -104,6 +93,14 @@ class Node {
         void setLeftChild(Node* l) {
             leftChild = l;
         }
+
+        /**
+         * Returns ptr to the parent node
+         * @return the parent node
+         */
+        Node* getParent() {
+            return parent;
+        }
 };
 
 /**
@@ -115,6 +112,29 @@ Node* createTree(vector<int> keys) {
     Node* head = new Node(keys[0], NULL, NULL);
 
     return head;
+}
+
+/**
+ * Enumerates through the tree as a stack
+ * @param n the head node
+ * @return a string of the enumeration
+ */
+string enumerate(Node* n, string s) {
+    if(n->getLeftChild() != NULL) enumerate(n->getLeftChild(), s);
+    else if(n->getRightChild() != NULL) enumerate(n->getRightChild(), s);
+    else s += n->getValue() + " ";
+    return s;
+}
+
+/**
+ * Outputs the result of a search
+ * @param k the key
+ */
+void search(int k, Node* head, Node* n) {
+    if(n == NULL) cout << -1;
+    else if(n->getValue() < k) search(k, n->getRightChild());
+    else if(n->getValue() > k) search(k, n->getLeftChild());
+    else cout << enumerate(head, "").pop_back();
 }
 
 int main() {
