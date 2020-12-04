@@ -118,9 +118,9 @@ Node* search(int k, Node* n) {
  * @return a stack of the enumeration
  */
 void enumerate(Node* n, stack<Node*> &e) {
-    if(n->getLeftChild() != NULL) enumerate(n->getLeftChild(), e);
+    if(n != NULL) e.push(n);
     if(n->getRightChild() != NULL) enumerate(n->getRightChild(), e);
-    e.push(n);
+    if(n->getLeftChild() != NULL) enumerate(n->getLeftChild(), e);
 }
 
 /**
