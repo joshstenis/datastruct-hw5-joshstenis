@@ -180,10 +180,11 @@ int insertNode(Node* c, int k) {
  * @param k the key of the node to be removed
  * @param h the head node of the tree
  */
-void removeNode(int k, Node* h) {
+int removeNode(int k, Node* h) {
     Node* n = search(k, h);
 
-    if(n->getLeftChild() == NULL && n->getRightChild() == NULL) {                                   // Leaf node
+    if(n == NULL) return -1;
+    else if(n->getLeftChild() == NULL && n->getRightChild() == NULL) {                                   // Leaf node
         if(n->getParent()->getLeftChild() == n) n->getParent()->setLeftChild(NULL);
         else n->getParent()->setRightChild(NULL);
     } else if(n->getLeftChild() == NULL && n->getRightChild() != NULL) {                            // Only left child
@@ -193,12 +194,13 @@ void removeNode(int k, Node* h) {
         n->setValue(n->getRightChild()->getValue());
         n->setRightChild(NULL);
     } else {                                                                                        // Two children
-        Node* tmp = h->getRightChild();
-        cout << tmp->getValue() << endl;
-        while(tmp != NULL) tmp = tmp->getLeftChild();
+        Node* tmp = n->getLeftChild();
+        while(tmp->getRightChild() != NULL) tmp = tmp->getRightChild();
+
         n->setValue(tmp->getValue());
+        tmp->getParent()->setRightChild(NULL);
         tmp->setValue(NULL);
-    }
+    } return 0;
 }
 
 /**
@@ -249,11 +251,12 @@ int main() {
 
         case 3:                 // Delete
         {
-            removeNode(key, head);
-
-            stack<Node*>* s = new stack<Node*>();
-            enumerate(head, *s);
-            outputStack(s);
+            if(removeNode(key, head) == -1) cout << -1;
+            else {
+                stack<Node*>* s = new stack<Node*>();
+                enumerate(head, *s);
+                outputStack(s);
+            }            
         } break;
 
         default: break;
