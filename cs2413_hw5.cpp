@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <stack>
 using namespace std;
 
 /**
@@ -18,7 +17,38 @@ int strToInt(string str) {
     return val/10;
 }
 
+template <typename T>
+class stack {
+        
+        vector<T> stk;
+        T top;
+
+    public:
+
+        stack() : stk({}) {}
+
+        stack(vector<T> v) : stk(v), top(stk.back()) {}
+
+        /**
+         * Pushes given element onto the stack
+         * @param e the new top element
+         */
+        void push(T e) {
+            stk.push_back(e);
+            top = stk.back();
+        }
+
+        /**
+         * Returns top of the stack
+         * @return the top element
+         */
+        T top() {
+            return top;
+        }
+};
+
 class Node {
+    
         int value;
         Node* parent;
         Node* rightChild;
