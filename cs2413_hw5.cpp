@@ -17,46 +17,6 @@ int strToInt(string str) {
     return val/10;
 }
 
-template <typename T>
-class stack {
-        
-        vector<T*> stk;
-        T* top;
-
-    public:
-
-        stack() : stk({}) {}
-
-        stack(vector<T*> v) : stk(v), top(stk.back()) {}
-
-        /**
-         * Pushes given element onto the stack
-         * @param e the new top element
-         */
-        void push(T* e) {
-            stk.push_back(e);
-            top = stk.back();
-        }
-
-        /**
-         * Pops (removes) the top of the stack
-         * @return the element that was removed
-         */
-        T* pop() {
-            T* n = stk.pop_back();
-            top = stk.back();
-            return n;
-        }
-
-        /**
-         * Returns top of the stack
-         * @return the top element
-         */
-        T* top() {
-            return top;
-        }
-};
-
 class Node {
     
         int value;
@@ -136,6 +96,46 @@ class Node {
          */
         void setParent(Node* p) {
             parent = p;
+        }
+};
+
+template <typename T>
+class stack {
+        
+        vector<T> stk;
+        T top;
+
+    public:
+
+        stack() : stk({}) {}
+
+        stack(vector<T> v) : stk(v), top(stk.back()) {}
+
+        /**
+         * Pushes given element onto the stack
+         * @param e the new top element
+         */
+        void push(T e) {
+            stk.push_back(e);
+            top = stk.back();
+        }
+
+        /**
+         * Pops (removes) the top of the stack
+         * @return the element that was removed
+         */
+        T pop() {
+            T n = stk.pop_back();
+            top = stk.back();
+            return n;
+        }
+
+        /**
+         * Returns top of the stack
+         * @return the top element
+         */
+        T top() {
+            return top;
         }
 };
 
