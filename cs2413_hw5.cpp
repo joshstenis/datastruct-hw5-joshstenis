@@ -135,7 +135,7 @@ class stack {
          * @return whether or not the stk is empty
          */
         bool isEmpty() {
-            return (stk.size() > 0);
+            return (stk.size() == 0);
         }
 };
 
