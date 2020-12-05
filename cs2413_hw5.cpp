@@ -39,6 +39,16 @@ class stack {
         }
 
         /**
+         * Pops (removes) the top of the stack
+         * @return the element that was removed
+         */
+        T pop() {
+            T n = stk.pop_back();
+            top = stk.back();
+            return n;
+        }
+
+        /**
          * Returns top of the stack
          * @return the top element
          */
