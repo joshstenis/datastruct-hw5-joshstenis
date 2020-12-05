@@ -102,11 +102,10 @@ class Node {
 class stack {
         
         vector<Node*> stk;
-        int top;
 
     public:
 
-        stack() : stk({}), top(stk.size()) {}
+        stack() : stk({}) {}
 
         /**
          * Pushes given element onto the stack
@@ -114,7 +113,6 @@ class stack {
          */
         void push(Node* e) {
             stk.push_back(e);
-            top = stk.size();
         }
 
         /**
@@ -122,7 +120,6 @@ class stack {
          */
         void pop() {
             stk.pop_back();
-            top = stk.size();
         }
 
         /**
@@ -138,7 +135,7 @@ class stack {
          * @return whether or not the stk is empty
          */
         bool isEmpty() {
-            return (top > 0);
+            return (stk.size() > 0);
         }
 };
 
