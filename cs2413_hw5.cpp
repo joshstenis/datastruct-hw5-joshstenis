@@ -102,13 +102,11 @@ class Node {
 class stack {
         
         vector<Node*> stk;
-        Node* top;
+        int top;
 
     public:
 
-        stack() : stk({}) {}
-
-        stack(vector<Node*> v) : stk(v), top(stk.back()) {}
+        stack() : stk({}), top(stk.size()) {}
 
         /**
          * Pushes given element onto the stack
@@ -116,17 +114,15 @@ class stack {
          */
         void push(Node* e) {
             stk.push_back(e);
-            top = stk.back();
+            top = stk.size();
         }
 
         /**
          * Pops (removes) the top of the stack
-         * @return the element that was removed
          */
-        Node* pop() {
-            Node* n = stk.pop_back();
-            top = stk.back();
-            return n;
+        void pop() {
+            stk.pop_back();
+            top = stk.size();
         }
 
         /**
@@ -134,7 +130,15 @@ class stack {
          * @return the top element
          */
         Node* top() {
-            return top;
+            return stk.back();
+        }
+
+        /**
+         * Checks if the stack is empty
+         * @return whether or not the stk is empty
+         */
+        bool isEmpty() {
+            return (top > 0);
         }
 };
 
@@ -156,7 +160,7 @@ Node* search(int k, Node* n) {
  * @param n the head node
  * @param e the address to the stack
  */
-void enumerate(Node* n, stack<Node*> &e) {
+void enumerate(Node* n, stack &e) {
     if(n != NULL) e.push(n);
     if(n->getRightChild() != NULL) enumerate(n->getRightChild(), e);
     if(n->getLeftChild() != NULL) enumerate(n->getLeftChild(), e);
@@ -166,11 +170,11 @@ void enumerate(Node* n, stack<Node*> &e) {
  * Outputs the stack given
  * @param stack the stack of nodes
  */
-void outputStack(stack<Node*>* stack) {
+void outputStack(stack* stack) {
     cout << stack->top()->getValue();
     stack->pop();
 
-    while(stack->empty() == false) {
+    while(stack->isEmpty() == false) {
       cout << " " << stack->top()->getValue();
       stack->pop();
     }
@@ -184,7 +188,7 @@ void outputStack(stack<Node*>* stack) {
 void outputSearch(int k, Node* h) {
     if(search(k, h) == NULL) cout << -1;
     else {
-        stack<Node*>* s = new stack<Node*>();
+        stack* s = new stack();
         enumerate(h, *s);
         outputStack(s);
     }
@@ -281,7 +285,7 @@ int main() {
         {
             if(insertNode(head, key) == -1) cout << -1;
             else {
-                stack<Node*>* s = new stack<Node*>();
+                stack* s = new stack();
                 enumerate(head, *s);
                 outputStack(s);
             }
@@ -291,7 +295,7 @@ int main() {
         {
             if(removeNode(key, head) == -1) cout << -1;
             else {
-                stack<Node*>* s = new stack<Node*>();
+                stack* s = new stack();
                 enumerate(head, *s);
                 outputStack(s);
             }            
