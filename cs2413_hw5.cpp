@@ -20,20 +20,20 @@ int strToInt(string str) {
 template <typename T>
 class stack {
         
-        vector<T> stk;
-        T top;
+        vector<T*> stk;
+        T* top;
 
     public:
 
         stack() : stk({}) {}
 
-        stack(vector<T> v) : stk(v), top(stk.back()) {}
+        stack(vector<T*> v) : stk(v), top(stk.back()) {}
 
         /**
          * Pushes given element onto the stack
          * @param e the new top element
          */
-        void push(T e) {
+        void push(T* e) {
             stk.push_back(e);
             top = stk.back();
         }
@@ -42,8 +42,8 @@ class stack {
          * Pops (removes) the top of the stack
          * @return the element that was removed
          */
-        T pop() {
-            T n = stk.pop_back();
+        T* pop() {
+            T* n = stk.pop_back();
             top = stk.back();
             return n;
         }
@@ -52,7 +52,7 @@ class stack {
          * Returns top of the stack
          * @return the top element
          */
-        T top() {
+        T* top() {
             return top;
         }
 };
